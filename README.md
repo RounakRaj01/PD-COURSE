@@ -124,9 +124,8 @@
 
 Term  | Description
 | :---: | :---
-Skywater 130nm | Skywater 130nm is a open source PDK (Process Design Kit) released in collaboration between Google and Skywater. It has Apache 2.0 licensing.
-OpenLane  | OpenLane is an automated RTL to GDSII flow based on several components including OpenROAD, Yosys, Magic, Netgen, CVC, SPEF-Extractor, KLayout and a number of custom scripts for design exploration and optimization. The flow performs all ASIC implementation steps from RTL all the way down to GDSII.
-
+Skywater 130nm | The Skywater 130nm is an open-source Process Design Kit (PDK) made available through a collaboration between Google and Skywater. It is licensed under Apache 2.0.
+OpenLane  |OpenLane is an automated RTL to GDSII flow that integrates multiple components such as OpenROAD, Yosys, Magic, Netgen, CVC, SPEF-Extractor, KLayout, along with several custom scripts for design exploration and optimization. The flow covers all ASIC implementation stages from RTL to GDSII.
 **OpenLane Flow:**
 ![image](https://github.com/user-attachments/assets/72d3394c-116d-4976-a4bc-8feed420e8b3)
 
@@ -208,19 +207,19 @@ $$ \texttt{utilization ratio} = {\texttt{Total area of the netlist} \over \textt
 
 $$ \texttt{aspect ratio} = {\texttt{core height} \over \texttt{core width}} $$
 
-Utilization ratio is generally kept between 0.5-0.6 in order to allow room for optimizations, decaps, routing. All these parameters can be controlled using keywords.
+The utilization ratio is typically set between 0.5 and 0.6 to allow room for optimizations, decoupling capacitors (decaps), and routing. These parameters can be controlled using specific keywords.
 
-Floorplanning is performed before placement in order to place blocks (pre placed cells). This fixes the positions and blockages are created for the placer in this region. Blocks are created by cutting the logic and deciding pins. These are assigned to block owners for implementation with guidance on area and dimensions. Blocks are cells which are generally repeated multiple times throughout the design or some complicated logic.
+Floorplanning is done before placement to position pre-placed cells or blocks. This process fixes their positions and creates blockages for the placer in that area. Blocks are formed by partitioning the logic and assigning pins, then handed off to block owners for implementation, with guidance on area and dimensions. Blocks usually consist of cells that are repeated multiple times across the design or contain complex logic.
 
-The blocks placement is an optimization problem where the parameters are closeness to respective ports, order in which the blocks operate, etc. Flylines are used in this stage to determine their placement.
+Placing these blocks is an optimization problem that considers factors such as proximity to ports and the order in which the blocks operate. Flylines help determine block placement during this phase.
 
-Decoupling capacitors provide a local source of charge for instances rather than from the power supply. These charge when there is no switching happening and provide charge when the instances switch. These help alleviate dynamic voltage drops to some extent. Decaps are generally placed all around the blocks.
+Decoupling capacitors (decaps) act as local charge sources for instances, charging when no switching occurs and providing charge when switching happens. This helps reduce dynamic voltage drops. Decaps are typically placed around the blocks.
 
-Having just one pathway for power delivery causes IR drop irrespective of presence of decaps as decaps can charge upto Vsource - IR. Creating a grid structure is important as it ensures multiple path ways for various different instances.
+A single pathway for power delivery results in IR drop, even with decaps, as decaps can only charge up to Vsource - IR. Using a grid structure is crucial because it provides multiple pathways for different instances.
 
-The area between the core and die is blocked using logical cell placement blockage so that the placer does not place any cells here. Pins are placed here, pins can be equidistant or at random distance, Also the pin placement should take into consideration the block inputs. Clock pins are larger than signal as they have huge fanout and need less resistance.
+The area between the core and die is blocked off using logical cell placement blockages to prevent the placer from positioning cells there. Pins are placed in this region and can be equidistant or spaced randomly, depending on the block's input needs. Clock pins are larger than signal pins since they handle large fanout and require lower resistance.
 
-PDN is generally implemented during floorplanning but here it will happen after CTS.
+The Power Distribution Network (PDN) is generally implemented during floorplanning, but in this case, it will be done after Clock Tree Synthesis (CTS).
 
 ### <h1 id="header-2-2-2">Placement:</h1>
 
@@ -230,18 +229,16 @@ The idea is to take the library information of the cells to implement the netlis
 
 ![image](https://github.com/user-attachments/assets/24951443-c606-4e5b-b05e-e47e022d3ada)
 
-As seen below first the instances are placed according to the netlist on the design instances close to the pins are placed near the IO pads. 
+As shown below, the instances are initially placed according to the netlist, with those closest to the pins positioned near the IO pads.
 
-If there are hard paths then placement is performed and then based on wireload estimations cap is calculated and  if slew threshold is not met buffers are added to regenerate the signals and help with signal integrity.
-
+For hard paths, placement is done first, and wireload estimates are used to calculate capacitance. If the slew threshold is not met, buffers are added to regenerate the signals and improve signal integrity.
 ![image](https://github.com/user-attachments/assets/656327cd-f74e-41fd-9038-da219b94c956)
 
-After this is done then congestion aware analysis considering ideal clocks.
+Once this is complete, congestion-aware analysis is conducted with ideal clocks.
 
-Generally placement is done in two stages
-1. Global placement : Coarse placement and no legalizations considered
-2. Detailed placement: legalizations happen here where instances are placed according to standard cell rows.
-
+Placement typically occurs in two stages:
+1. **Global placement**: A coarse placement where legalizations are not yet considered.
+2. **Detailed placement**: Legalizations are applied, and instances are arranged within the standard cell rows.
 ### <h1 id="header-2-2-3">Cell Design and Characterization flows:</h1>
 
 ![image](https://github.com/user-attachments/assets/662a8ab2-6471-4804-a6c5-8bc00db5068d)
@@ -290,13 +287,13 @@ Output is a def file:
 
 ![image](https://github.com/user-attachments/assets/097762b3-485c-4f0f-960a-7a1a4a16b1a5)
 
-409 pins present with location defined
+There are 409 pins with defined locations.
 
-21230 components ( synthesis had 14876, difference is because of tap cells and decaps which are 6354 in number)
+A total of 21,230 components are present (synthesis had 14,876, with the difference of 6,354 due to the addition of tap cells and decaps).
 
-All logic instances don't have placement defined. Tap cells and decaps are placed.
+Placement has not been defined for all logic instances, but tap cells and decaps have been placed.
 
-Nets have logical connectivity defined but no routing as expected
+Nets have logical connectivity specified, but, as expected, no routing has been done yet.
 
 #### <h1 id="header-2-3-2-2">Calculating Core and Die area and utilization ratio</h1>
 
@@ -379,7 +376,7 @@ First we need to select a substrate, here we select p type
 
 ![image](https://github.com/user-attachments/assets/0aa527d2-be4e-4c68-bd9b-67d6b690f93d)
 
-To create active regions first we need to grow silicon oxide layer which will act as an insulator. Then deposit Si3N4 on top of it. Then we deposit photoresist and then project UV light over regions we what to be removed.Red regions are protected using a mask. Rest of the region reacts and can be washed out.
+To create active regions, the first step is to grow a silicon oxide layer that will serve as an insulator. Next, a layer of Si3N4 is deposited on top. After this, photoresist is applied, and UV light is projected onto the areas to be removed. The red regions are protected by a mask, while the rest of the exposed regions react and can be washed away.
 
 ![image](https://github.com/user-attachments/assets/68b59a7f-4359-4831-9bbe-6d895dca5a50)
   
@@ -406,12 +403,11 @@ Next step is to remove or etch out the Si3N4.
 
 ![image](https://github.com/user-attachments/assets/5899aacd-c163-401b-996a-17b2c2aa724b)
 
-Now we need to create nwell and pwell
+Next, we need to create the n-well and p-well.
 
-N-well is used for pmos fabrication and P-well is used for nmos fabrication. Both can't be done at the same time. We need to protect the one area while we fabricate the other.
+The n-well is used for PMOS fabrication, and the p-well is used for NMOS fabrication. Since both cannot be fabricated simultaneously, one area must be protected while the other is being processed.
 
-The same steps will be done here also, deposit a layer of photoresist then define pattren of layer you want to protect. So we are using Mask2 to protect one area first.
-
+The same steps are followed here: a layer of photoresist is deposited, and the pattern for the area to be protected is defined. Mask2 is then used to shield one area while fabricating the other.
    ![image](https://github.com/user-attachments/assets/7769effc-6a34-422e-84b4-c01214650cb2)
 
 Next step is to expose this photoresist to the UV light. So, same this UV light will react only to the exposed photoresist area.
