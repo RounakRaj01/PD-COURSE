@@ -123,9 +123,11 @@
 # <h1 id="header-0">Overview</h1>
 
 Term  | Description
-| :---: | :---
-Skywater 130nm | The Skywater 130nm is an open-source Process Design Kit (PDK) made available through a collaboration between Google and Skywater. It is licensed under Apache 2.0.
-OpenLane  |OpenLane is an automated RTL to GDSII flow that integrates multiple components such as OpenROAD, Yosys, Magic, Netgen, CVC, SPEF-Extractor, KLayout, along with several custom scripts for design exploration and optimization. The flow covers all ASIC implementation stages from RTL to GDSII.
+
+<p>Skywater 130nm ---> The Skywater 130nm is an open-source Process Design Kit (PDK) made available through a collaboration between Google and Skywater. It is licensed under Apache 2.0.</p>
+<p></p>OpenLane       --->OpenLane is an automated RTL to GDSII flow that integrates multiple components such as OpenROAD, Yosys, Magic, Netgen, CVC, SPEF-Extractor, KLayout, along with several custom scripts for design exploration and optimization. The flow covers all ASIC implementation stages from RTL to GDSII. </p>
+
+
 **OpenLane Flow:**
 ![image](https://github.com/user-attachments/assets/72d3394c-116d-4976-a4bc-8feed420e8b3)
 
